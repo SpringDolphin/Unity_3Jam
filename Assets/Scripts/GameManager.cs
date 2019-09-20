@@ -27,6 +27,11 @@ public class GameManager : MonoBehaviour
     Camera mainCamera;
 
 
+    //デバッグモードかどうか
+    public bool IsDebugging = false;
+
+
+
 
     // Start is called before the first frame update
     void Start()
@@ -40,6 +45,8 @@ public class GameManager : MonoBehaviour
         ballstatus = BallStatus.waiting;
 
         mainCamera.transform.position = new Vector3(0, 10, -10);
+
+        IsDebugging = false;
     }
 
     // Update is called once per frame
@@ -63,6 +70,40 @@ public class GameManager : MonoBehaviour
             default:
                 Debug.Log("You are an idiot!");
                 break;
+        }
+
+        //カメラについて
+        if (IsDebugging)
+        {
+            //mainCamera.transform.eulerAngles += new Vector3(0, 1, 0);
+
+            if (Input.GetButtonDown("DirectionX"))
+            {
+                mainCamera.transform.eulerAngles = new Vector3(0, -90, 0);
+                mainCamera.transform.position = new Vector3(60, 10, 30);
+            }
+            if (Input.GetButtonDown("DirectionY"))
+            {
+                mainCamera.transform.eulerAngles = new Vector3(90, 0, 0);
+                mainCamera.transform.position = new Vector3(0, 65, 30);
+            }
+            if (Input.GetButtonDown("DirectionZ"))
+            {
+                mainCamera.transform.eulerAngles = new Vector3(0, 0, 180);
+                mainCamera.transform.position = new Vector3(0, 10, 30);
+            }
+        }
+        else
+        {
+
+        }
+
+
+        //デバッグモードの操作
+        if (Input.GetButtonDown("DebugButton"))
+        {
+            IsDebugging = !IsDebugging;
+            Debug.Log("debug is switching!");
         }
     }
 }

@@ -13,7 +13,9 @@ public class BallManager : MonoBehaviour
 
 
     //定数群
-    private const float throwspeed = 10.0f;
+
+    //ボールの投げるスピード
+    private const float throwspeed = 1.0f;
 
 
 
