@@ -7,11 +7,6 @@ public class ThrowAreaManager : MonoBehaviour
 
 
 
-    //定数群
-    
-
-
-
     // Start is called before the first frame update
     void Start()
     {
@@ -23,4 +18,5 @@ public class ThrowAreaManager : MonoBehaviour
     {
         
     }
+
 }

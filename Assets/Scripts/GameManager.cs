@@ -120,6 +120,9 @@ public class GameManager : MonoBehaviour
 
             switch (ballstatus)
             {
+                case BallStatus.waiting:
+
+                    break;
 
                 case BallStatus.throwed:
                     mainCamera.transform.position = ballPos;

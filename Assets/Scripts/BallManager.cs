@@ -7,6 +7,7 @@ public class BallManager : MonoBehaviour
 
     //GameManagerからgetcomponentで弾の状況を受け取る。
     public GameObject gamemaster;
+    public GameObject canvas;
 
 
 
@@ -26,6 +27,7 @@ public class BallManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        canvas = GameObject.Find("Canvas");
         BallInit();
     }
 
@@ -34,6 +36,27 @@ public class BallManager : MonoBehaviour
     {
 
     }
+
+
+
+
+
+
+    //衝突の判定について
+    private void OnTriggerEnter(Collider other)
+    {
+        Debug.Log(other);
+
+        switch (other.gameObject.name)
+        {
+            case "ThrowArea":
+
+                canvas.GetComponent<UIManager>().judging("Strike");
+                
+                break;
+        }
+    }
+
 
 
     //ボールの初期化
