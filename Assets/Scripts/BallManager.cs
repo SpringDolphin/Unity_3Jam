@@ -15,6 +15,9 @@ public class BallManager : MonoBehaviour
     private float startTimes;
     //判定内容
     private string judges;
+    //棒に当たったかどうか
+    private bool attackF;
+
 
 
 
@@ -27,6 +30,9 @@ public class BallManager : MonoBehaviour
 
     //ボールの曲げ具合
     private readonly Vector3 ballAccel = new Vector3(0.2f, 0.4f, 0.2f);
+
+    //飛んでるときの曲げ具合
+    private readonly Vector3 ballFlyAccel = new Vector3(0.01f, 0, 0.01f);
 
     //ボールの初期位置
     private readonly Vector3 ballInitPos = new Vector3(0, 10, 0);
@@ -44,7 +50,7 @@ public class BallManager : MonoBehaviour
     void Update()
     {
         //判断中...
-        if (judgeF)
+        if (judgeF && !attackF)
         {
             if(Time.time - startTimes > 0.5f)
             {
@@ -59,7 +65,7 @@ public class BallManager : MonoBehaviour
 
 
 
-    //衝突の判定について
+    //判定の壁への衝突の判定について
     private void OnTriggerEnter(Collider other)
     {
         Debug.Log(other);
@@ -91,6 +97,24 @@ public class BallManager : MonoBehaviour
 
 
 
+    //バットとの衝突判定
+    private void OnCollisionEnter(Collision collision)
+    {
+
+        for(int i = 1; i <= 4; i++)
+        {
+            if (collision.gameObject.name == "bat" + i.ToString())
+            {
+                attackF = true;
+            }
+        }
+
+        if (attackF)
+        {
+            gamemaster.GetComponent<GameManager>().BallHit();
+        }
+    }
+
     //ボールの初期化
     public void BallInit()
     {
@@ -100,6 +124,7 @@ public class BallManager : MonoBehaviour
         rd.velocity = Vector3.zero;
         rd.useGravity = false;
         judgeF = false;
+        attackF = false;
     }
     public void ThrowInit(Vector2 controll)
     {
@@ -155,13 +180,13 @@ public class BallManager : MonoBehaviour
         if (Mathf.Abs(Input.GetAxisRaw("Horizontal")) > 0.5)
         {
             //最初の時と比べてカメラの向きが180度変化することに注意する。
-            accel.x = ballAccel.x * -Mathf.Sign(Input.GetAxisRaw("Horizontal"));
+            accel.x = ballFlyAccel.x * -Mathf.Sign(Input.GetAxisRaw("Horizontal"));
             //Debug.Log("x");
         }
 
         if (Mathf.Abs(Input.GetAxisRaw("Vertical")) > 0.5)
         {
-            accel.z = ballAccel.z * Mathf.Sign(Input.GetAxisRaw("Vertical"));
+            accel.z = ballFlyAccel.z * -Mathf.Sign(Input.GetAxisRaw("Vertical"));
             //Debug.Log("y");
         }
 

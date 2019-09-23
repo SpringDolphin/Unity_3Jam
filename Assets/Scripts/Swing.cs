@@ -47,7 +47,7 @@ public class Swing : MonoBehaviour
         {
             float angle = Mathf.LerpAngle(minAngle, maxAngle, (Time.time - (swingStart+startTime)) * swingSpeed);
             transform.eulerAngles = new Vector3(90, -angle, 0);
-            if (angle == 1)
+            if (angle >= 180)
             {
                 startTime = 1000;
                 swingMode = false;

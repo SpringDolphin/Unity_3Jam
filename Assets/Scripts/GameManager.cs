@@ -258,4 +258,10 @@ public class GameManager : MonoBehaviour
 
     }
 
+
+    public void BallHit()
+    {
+        ballstatus = BallStatus.flying;
+    }
+
 }
