@@ -23,11 +23,16 @@ public class UIManager : MonoBehaviour
     }
 
 
+    public void WaitInit()
+    {
+        judgeText.GetComponent<Text>().enabled = false;
+    }
 
     public void judging(string result)
     {
 
         ChangeText(result);
+        judgeText.GetComponent<Text>().enabled = true;
 
     }
 

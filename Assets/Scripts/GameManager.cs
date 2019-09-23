@@ -4,6 +4,14 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
+    //ゲームモードの状況
+    public enum GameStatus
+    {
+        //投げる準備
+        ready,
+        //勝負中
+        fighting
+    }
     //ボールの状態
     public enum BallStatus
     {
@@ -18,11 +26,14 @@ public class GameManager : MonoBehaviour
         //打たれて飛ばされているとき
         flying
     };
+    GameStatus gameStatus;
     BallStatus ballstatus;
 
 
     GameObject ballObj;
-   
+    GameObject canvasObj;
+    GameObject[] bat = new GameObject[4];
+
 
 
     Camera mainCamera;
@@ -45,27 +56,71 @@ public class GameManager : MonoBehaviour
        
 
         ballObj = GameObject.Find("Ball");
+        canvasObj = GameObject.Find("Canvas");
+        bat[0] = GameObject.Find("bat0");
+        bat[1] = GameObject.Find("bat1");
+        bat[2] = GameObject.Find("bat2");
+        bat[3] = GameObject.Find("bat3");
 
         mainCamera = Camera.main;
 
-
-
-        ballstatus = BallStatus.waiting;
-
-        mainCamera.transform.position = new Vector3(0, 10, -10);
-
         IsDebugging = false;
-        
+
+        gameStatus = GameStatus.ready;
+
+
     }
 
     // Update is called once per frame
     void Update()
     {
-        GameObject[] bat = new GameObject[4];
-        bat[0] = GameObject.Find("bat0");
-        bat[1] = GameObject.Find("bat1");
-        bat[2] = GameObject.Find("bat2");
-        bat[3] = GameObject.Find("bat3");
+
+        //投げる準備～収集までの流れ
+        switch (gameStatus)
+        {
+            case GameStatus.ready:
+
+                ballstatus = BallStatus.waiting;
+                mainCamera.transform.position = new Vector3(0, 10, -10);
+                canvasObj.GetComponent<UIManager>().WaitInit();
+                gameStatus = GameStatus.fighting;
+                break;
+
+            case GameStatus.fighting:
+
+                BallUpdate();
+                CameraUpdate();
+
+                break;
+
+            default:
+
+                Debug.Log("You are an idiot!");
+
+                break;
+        }
+
+
+
+
+        //デバッグモードの操作
+        if (Input.GetButtonDown("DebugButton"))
+        {
+            IsDebugging = !IsDebugging;
+            Debug.Log("debug change!");
+            if (IsDebugging)
+            {
+                Debug.Log("debug now!");
+            }
+        }
+    }
+
+
+
+    //ボールの情報更新
+    public void BallUpdate()
+    {
+
         switch (ballstatus)
         {
             case BallStatus.waiting:
@@ -89,10 +144,13 @@ public class GameManager : MonoBehaviour
                 break;
         }
 
+    }
 
 
 
-
+    //カメラ情報の更新
+    public void CameraUpdate()
+    {
         //デバッグモード中
         if (IsDebugging)
         {
@@ -153,17 +211,8 @@ public class GameManager : MonoBehaviour
 
             }
         }
-
-
-        //デバッグモードの操作
-        if (Input.GetButtonDown("DebugButton"))
-        {
-            IsDebugging = !IsDebugging;
-            Debug.Log("debug change!");
-            if (IsDebugging)
-            {
-                Debug.Log("debug now!");
-            }
-        }
     }
+
+
+
 }
