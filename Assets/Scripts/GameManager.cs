@@ -32,6 +32,11 @@ public class GameManager : MonoBehaviour
 
 
 
+    //定数群
+
+
+
+
 
     // Start is called before the first frame update
     void Start()
@@ -47,6 +52,7 @@ public class GameManager : MonoBehaviour
         mainCamera.transform.position = new Vector3(0, 10, -10);
 
         IsDebugging = false;
+        
     }
 
     // Update is called once per frame
@@ -60,7 +66,6 @@ public class GameManager : MonoBehaviour
                 {
                     ballstatus = BallStatus.throwed;
                     ballObj.GetComponent<BallManager>().ThrowInit();
-                    
                 }
                 break;
             case BallStatus.throwed:
@@ -71,6 +76,10 @@ public class GameManager : MonoBehaviour
                 Debug.Log("You are an idiot!");
                 break;
         }
+
+
+
+
 
         //カメラについて
         if (IsDebugging)
@@ -89,8 +98,8 @@ public class GameManager : MonoBehaviour
             }
             if (Input.GetButtonDown("DirectionZ"))
             {
-                mainCamera.transform.eulerAngles = new Vector3(0, 0, 180);
-                mainCamera.transform.position = new Vector3(0, 10, 30);
+                mainCamera.transform.eulerAngles = new Vector3(0, 180, 0);
+                mainCamera.transform.position = new Vector3(0, 10, 100);
             }
         }
         else

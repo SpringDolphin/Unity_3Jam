@@ -17,6 +17,9 @@ public class BallManager : MonoBehaviour
     //ボールの投げるスピード
     private const float throwspeed = 1.0f;
 
+    //ボールの曲げ具合
+    private readonly Vector3 ballAccel = new Vector3(1.0f, 1.0f, 0);
+
 
 
     // Start is called before the first frame update
@@ -44,6 +47,31 @@ public class BallManager : MonoBehaviour
     //ここからはボールの状況によって処理が変更されます。
     public void Throwing()
     {
+
+        Vector3 accel = new Vector3(0, 0, 0);
+
+
+
+
+        if (Mathf.Abs(Input.GetAxisRaw("Horizontal")) > 0.5)
+        {
+            accel.x = ballAccel.x * Mathf.Sign(Input.GetAxisRaw("Horizontal"));
+            //Debug.Log("x");
+        }
+
+        if (Mathf.Abs(Input.GetAxisRaw("Vertical")) > 0.5)
+        {
+            accel.y = ballAccel.y * Mathf.Sign(Input.GetAxisRaw("Vertical"));
+            //Debug.Log("y");
+        }
+
+
+
+        //vの後身
+        velocity += accel;
+
+
+        //位置の更新
         this.transform.position += velocity;
 
     }
