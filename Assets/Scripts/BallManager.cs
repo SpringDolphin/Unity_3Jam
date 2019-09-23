@@ -10,6 +10,10 @@ public class BallManager : MonoBehaviour
     public GameObject canvas;
 
 
+    //判定がすんだかどうか
+    private bool judgeF;
+
+
 
     //定数群
 
@@ -27,6 +31,7 @@ public class BallManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        gamemaster = GameObject.Find("GameMaster");
         canvas = GameObject.Find("Canvas");
         BallInit();
     }
@@ -47,12 +52,25 @@ public class BallManager : MonoBehaviour
     {
         Debug.Log(other);
 
+
+
+        if (judgeF) return;
+
+
         switch (other.gameObject.name)
         {
             case "ThrowArea":
 
-                canvas.GetComponent<UIManager>().judging("Strike");
-                
+                gamemaster.GetComponent<GameManager>().BallJudge("Strike");
+                judgeF = true;
+
+                break;
+
+            case "BallArea":
+
+                gamemaster.GetComponent<GameManager>().BallJudge("Ball");
+                judgeF = true;
+
                 break;
         }
     }
@@ -67,6 +85,7 @@ public class BallManager : MonoBehaviour
         this.transform.position = ballInitPos;
         rd.velocity = Vector3.zero;
         rd.useGravity = false;
+        judgeF = false;
     }
     public void ThrowInit()
     {
