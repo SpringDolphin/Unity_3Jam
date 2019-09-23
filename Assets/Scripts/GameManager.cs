@@ -95,7 +95,9 @@ public class GameManager : MonoBehaviour
         }
         else
         {
-
+            Vector3 ballPos = ballObj.transform.position;
+            mainCamera.transform.position = ballPos;
+            mainCamera.transform.eulerAngles = new Vector3(0, 0, 0);
         }
 
 
