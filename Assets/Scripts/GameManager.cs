@@ -22,6 +22,7 @@ public class GameManager : MonoBehaviour
 
 
     GameObject ballObj;
+   
 
 
     Camera mainCamera;
@@ -41,6 +42,8 @@ public class GameManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+       
+
         ballObj = GameObject.Find("Ball");
 
         mainCamera = Camera.main;
@@ -58,7 +61,11 @@ public class GameManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
+        GameObject[] bat = new GameObject[4];
+        bat[0] = GameObject.Find("bat0");
+        bat[1] = GameObject.Find("bat1");
+        bat[2] = GameObject.Find("bat2");
+        bat[3] = GameObject.Find("bat3");
         switch (ballstatus)
         {
             case BallStatus.waiting:
@@ -111,6 +118,10 @@ public class GameManager : MonoBehaviour
             if (Input.GetButtonDown("Reset"))
             {
                 ballObj.GetComponent<BallManager>().BallInit();
+                for (int i = 0; i < 4; i++)
+                {
+                    bat[i].GetComponent<Swing>().BatInit();
+                }
                 ballstatus = BallStatus.waiting;
             }
         }
@@ -148,7 +159,11 @@ public class GameManager : MonoBehaviour
         if (Input.GetButtonDown("DebugButton"))
         {
             IsDebugging = !IsDebugging;
-            Debug.Log("debug is switching!");
+            Debug.Log("debug change!");
+            if (IsDebugging)
+            {
+                Debug.Log("debug now!");
+            }
         }
     }
 }
