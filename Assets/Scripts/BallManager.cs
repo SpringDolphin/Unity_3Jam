@@ -16,7 +16,7 @@ public class BallManager : MonoBehaviour
     [SerializeField] float throwspeed = 40f;
 
     //ボールの曲げ具合
-    private readonly Vector3 ballAccel = new Vector3(0.2f, 0.4f, 0);
+    private readonly Vector3 ballAccel = new Vector3(0.2f, 0.4f, 0.2f);
 
     //ボールの初期位置
     private readonly Vector3 ballInitPos = new Vector3(0, 10, 0);
@@ -79,7 +79,7 @@ public class BallManager : MonoBehaviour
 
 
 
-        //vの後身
+        //vの更新
         rd.velocity += accel;
 
 
@@ -92,6 +92,26 @@ public class BallManager : MonoBehaviour
     public void Fly()
     {
 
+        Rigidbody rd = this.GetComponent<Rigidbody>();
+        Vector3 accel = new Vector3(0, 0, 0);
+
+
+        if (Mathf.Abs(Input.GetAxisRaw("Horizontal")) > 0.5)
+        {
+            //最初の時と比べてカメラの向きが180度変化することに注意する。
+            accel.x = ballAccel.x * -Mathf.Sign(Input.GetAxisRaw("Horizontal"));
+            //Debug.Log("x");
+        }
+
+        if (Mathf.Abs(Input.GetAxisRaw("Vertical")) > 0.5)
+        {
+            accel.z = ballAccel.z * Mathf.Sign(Input.GetAxisRaw("Vertical"));
+            //Debug.Log("y");
+        }
+
+
+        //vの更新
+        rd.velocity += accel;
     }
 
     public Vector3 CameraDirectionAtFlying()
