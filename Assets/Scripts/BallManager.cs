@@ -7,7 +7,6 @@ public class BallManager : MonoBehaviour
 
     //GameManagerからgetcomponentで弾の状況を受け取る。
     public GameObject gamemaster;
-    public GameObject canvas;
 
 
     //判定がすんだかどうか
@@ -38,7 +37,6 @@ public class BallManager : MonoBehaviour
     void Start()
     {
         gamemaster = GameObject.Find("GameMaster");
-        canvas = GameObject.Find("Canvas");
         BallInit();
     }
 
@@ -103,11 +101,11 @@ public class BallManager : MonoBehaviour
         rd.useGravity = false;
         judgeF = false;
     }
-    public void ThrowInit()
+    public void ThrowInit(Vector2 controll)
     {
         Rigidbody rd = this.GetComponent<Rigidbody>();
 
-        rd.velocity = new Vector3(0, 0, throwspeed);
+        rd.velocity = new Vector3(controll.x, controll.y, throwspeed);
         rd.useGravity = true;
 
     }

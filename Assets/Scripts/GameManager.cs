@@ -52,7 +52,8 @@ public class GameManager : MonoBehaviour
 
     //フェードアウトまでにようする時間
     float fadeoutTime = 3.0f;
-
+    //投げる際のボールの方向の振れ幅
+    [SerializeField] Vector2 throwSize;
 
 
     // Start is called before the first frame update
@@ -150,14 +151,14 @@ public class GameManager : MonoBehaviour
     //ボールの情報更新
     public void BallUpdate()
     {
-
+        
         switch (ballstatus)
         {
             case BallStatus.waiting:
                 if (Input.GetButtonDown("Throw"))
                 {
                     ballstatus = BallStatus.throwed;
-                    ballObj.GetComponent<BallManager>().ThrowInit();
+                    ballObj.GetComponent<BallManager>().ThrowInit(new Vector2(Random.Range(-throwSize.x / 2, throwSize.x / 2), Random.Range(-throwSize.y / 2, throwSize.y / 2)));
                 }
                 break;
 
