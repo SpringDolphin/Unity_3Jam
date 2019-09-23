@@ -68,10 +68,15 @@ public class GameManager : MonoBehaviour
                     ballObj.GetComponent<BallManager>().ThrowInit();
                 }
                 break;
+
             case BallStatus.throwed:
                 ballObj.GetComponent<BallManager>().Throwing();
                 break;
 
+            case BallStatus.flying:
+                ballObj.GetComponent<BallManager>().Fly();
+
+                break;
             default:
                 Debug.Log("You are an idiot!");
                 break;
@@ -112,8 +117,27 @@ public class GameManager : MonoBehaviour
         else
         {
             Vector3 ballPos = ballObj.transform.position;
-            mainCamera.transform.position = ballPos;
-            mainCamera.transform.eulerAngles = new Vector3(0, 0, 0);
+
+            switch (ballstatus)
+            {
+
+                case BallStatus.throwed:
+                    mainCamera.transform.position = ballPos;
+                    mainCamera.transform.eulerAngles = new Vector3(0, 0, 0);
+
+                    break;
+
+                case BallStatus.flying:
+                    mainCamera.transform.position = ballPos;
+                    mainCamera.transform.eulerAngles = ballObj.GetComponent<BallManager>().CameraDirectionAtFlying();
+
+                    break;
+
+                default:
+                    Debug.Log("You are an idiot!");
+                    break;
+
+            }
         }
 
 

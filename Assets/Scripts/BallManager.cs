@@ -88,4 +88,22 @@ public class BallManager : MonoBehaviour
 
     }
 
+
+    public void Fly()
+    {
+
+    }
+
+    public Vector3 CameraDirectionAtFlying()
+    {
+        Vector3 vectors = this.GetComponent<Rigidbody>().velocity;
+
+        //基準
+        Vector3 answer = new Vector3(0, 180, 0);
+
+        //実際の計算
+        //Vector3 answer = new vector3(Mathf.Atan2(vectors.z, vectors.y),Mathf.Atan2(vectors.x, vectors.z),Mathf.Atan2(vectors.y, vectors.x));
+
+        return answer;
+    }
 }
