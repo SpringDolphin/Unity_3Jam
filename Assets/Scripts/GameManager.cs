@@ -81,15 +81,16 @@ public class GameManager : MonoBehaviour
 
 
 
-        //カメラについて
+        //デバッグモード中
         if (IsDebugging)
         {
+            //カメラについて
             //mainCamera.transform.eulerAngles += new Vector3(0, 1, 0);
 
             if (Input.GetButtonDown("DirectionX"))
             {
                 mainCamera.transform.eulerAngles = new Vector3(0, -90, 0);
-                mainCamera.transform.position = new Vector3(60, 10, 30);
+                mainCamera.transform.position = new Vector3(100, 10, 30);
             }
             if (Input.GetButtonDown("DirectionY"))
             {
@@ -100,6 +101,12 @@ public class GameManager : MonoBehaviour
             {
                 mainCamera.transform.eulerAngles = new Vector3(0, 180, 0);
                 mainCamera.transform.position = new Vector3(0, 10, 100);
+            }
+            //リセットだ
+            if (Input.GetButtonDown("Reset"))
+            {
+                ballObj.GetComponent<BallManager>().BallInit();
+                ballstatus = BallStatus.waiting;
             }
         }
         else

@@ -8,24 +8,25 @@ public class BallManager : MonoBehaviour
     //GameManagerからgetcomponentで弾の状況を受け取る。
     public GameObject gamemaster;
 
-    private Vector3 velocity = new Vector3(0, 0, 0);
-
 
 
     //定数群
 
     //ボールの投げるスピード
-    private const float throwspeed = 1.0f;
+    [SerializeField] float throwspeed = 40f;
 
     //ボールの曲げ具合
-    private readonly Vector3 ballAccel = new Vector3(1.0f, 1.0f, 0);
+    private readonly Vector3 ballAccel = new Vector3(0.2f, 0.4f, 0);
+
+    //ボールの初期位置
+    private readonly Vector3 ballInitPos = new Vector3(0, 10, 0);
 
 
 
     // Start is called before the first frame update
     void Start()
     {
-        
+        BallInit();
     }
 
     // Update is called once per frame
@@ -35,19 +36,30 @@ public class BallManager : MonoBehaviour
     }
 
 
+    //ボールの初期化
+    public void BallInit()
+    {
+        Rigidbody rd = this.GetComponent<Rigidbody>();
+
+        this.transform.position = ballInitPos;
+        rd.velocity = Vector3.zero;
+        rd.useGravity = false;
+    }
     public void ThrowInit()
     {
         Rigidbody rd = this.GetComponent<Rigidbody>();
 
-        this.velocity = new Vector3(0, 0, throwspeed);
+        rd.velocity = new Vector3(0, 0, throwspeed);
         rd.useGravity = true;
+
     }
 
-    
+
     //ここからはボールの状況によって処理が変更されます。
     public void Throwing()
     {
 
+        Rigidbody rd = this.GetComponent<Rigidbody>();
         Vector3 accel = new Vector3(0, 0, 0);
 
 
@@ -68,11 +80,11 @@ public class BallManager : MonoBehaviour
 
 
         //vの後身
-        velocity += accel;
+        rd.velocity += accel;
 
 
         //位置の更新
-        this.transform.position += velocity;
+        //this.transform.position += velocity;
 
     }
 
