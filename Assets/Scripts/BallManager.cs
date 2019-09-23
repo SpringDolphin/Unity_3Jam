@@ -12,6 +12,12 @@ public class BallManager : MonoBehaviour
 
     //判定がすんだかどうか
     private bool judgeF;
+    //判定を下すためのインターバル時間(判定エリア直撃後にバットに当たったことを考慮して)
+    private float startTimes;
+    //判定内容
+    private string judges;
+
+
 
 
 
@@ -39,7 +45,15 @@ public class BallManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
+        //判断中...
+        if (judgeF)
+        {
+            if(Time.time - startTimes > 0.5f)
+            {
+                gamemaster.GetComponent<GameManager>().BallJudge(judges);
+                judgeF = false;
+            }
+        }
     }
 
 
@@ -61,15 +75,17 @@ public class BallManager : MonoBehaviour
         {
             case "ThrowArea":
 
-                gamemaster.GetComponent<GameManager>().BallJudge("Strike");
                 judgeF = true;
+                judges = "Strike";
+                startTimes = Time.time;
 
                 break;
 
             case "BallArea":
 
-                gamemaster.GetComponent<GameManager>().BallJudge("Ball");
                 judgeF = true;
+                judges = "Ball";
+                startTimes = Time.time;
 
                 break;
         }
