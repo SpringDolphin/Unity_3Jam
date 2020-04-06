@@ -18,6 +18,9 @@ public class BallManager : MonoBehaviour
     //棒に当たったかどうか
     private bool attackF;
 
+    [SerializeField] private float flyingBaseRadian = 45.0f;
+
+
 
 
 
@@ -106,6 +109,26 @@ public class BallManager : MonoBehaviour
             if (collision.gameObject.name == "bat" + i.ToString())
             {
                 attackF = true;
+
+                //重さを十倍に増やし、基本的に上に飛ぶようにする。
+                Rigidbody rd = this.GetComponent<Rigidbody>();
+                rd.mass = 10;
+
+                Vector3 hitPoint = Vector3.zero;
+
+                foreach(ContactPoint point in collision.contacts){
+                    hitPoint = point.point;
+                }
+
+                rd.velocity = (rd.position - hitPoint).normalized * rd.velocity.magnitude;
+                
+                //zベクトルとyベクトルによる角度を調整することにより、基本上に飛ばすようにする
+                Vector3 _v = rd.velocity;
+                float mag = Mathf.Sqrt(Mathf.Pow(rd.velocity.y, 2) + Mathf.Pow(rd.velocity.z, 2));
+                float rad = Mathf.Rad2Deg * Mathf.Atan2(_v.y, -_v.z);
+                rad = Mathf.Pow(rad - flyingBaseRadian, 3.0f) * Mathf.PI / 2.0f / 729000.0f + flyingBaseRadian * Mathf.Deg2Rad;
+                rd.velocity = new Vector3(rd.velocity.x, mag * Mathf.Sin(rad), -mag * Mathf.Cos(rad));
+
             }
         }
 
