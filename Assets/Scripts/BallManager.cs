@@ -8,7 +8,6 @@ public class BallManager : MonoBehaviour
     //GameManagerからgetcomponentで弾の状況を受け取る。
     public GameObject gamemaster;
 
-
     //判定がすんだかどうか
     private bool judgeF;
     //判定を下すためのインターバル時間(判定エリア直撃後にバットに当たったことを考慮して)
@@ -20,7 +19,21 @@ public class BallManager : MonoBehaviour
 
     [SerializeField] private float flyingBaseRadian = 45.0f;
 
+    /// 放物線の始点の位置情報
+    private Vector3 instantiatePosition;
+    /// 放物線の生成座標(読み取り専用)
+    public Vector3 InstantiatePosition
+    {
+        get { return instantiatePosition; }
+    }
 
+    /// ボールの初速度 今のところThrowの時にしか速度変更はしてない
+    private Vector3 shootVelocity=Vector3.zero;
+    /// ボールの初速度(読み取り専用)
+    public Vector3 ShootVelocity
+    {
+        get { return shootVelocity; }
+    }
 
 
 
@@ -52,6 +65,8 @@ public class BallManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        //現在の位置をDrawArcで描く放物線の初期位置に設定
+        instantiatePosition = this.transform.position;
         //判断中...
         if (judgeF && !attackF)
         {
@@ -145,6 +160,7 @@ public class BallManager : MonoBehaviour
 
         this.transform.position = ballInitPos;
         rd.velocity = Vector3.zero;
+        shootVelocity = rd.velocity;
         rd.useGravity = false;
         judgeF = false;
         attackF = false;
@@ -154,6 +170,7 @@ public class BallManager : MonoBehaviour
         Rigidbody rd = this.GetComponent<Rigidbody>();
 
         rd.velocity = new Vector3(controll.x, controll.y, throwspeed);
+        shootVelocity = rd.velocity;
         rd.useGravity = true;
 
     }
@@ -185,6 +202,7 @@ public class BallManager : MonoBehaviour
 
         //vの更新
         rd.velocity += accel;
+        shootVelocity = rd.velocity;
 
 
         //位置の更新
